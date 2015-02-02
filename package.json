@@ -12,7 +12,9 @@
     "url": "http://github.com/mozilla/browser.html/issues/"
   },
   "scripts": {
-    "test": "jscs ./"
+    "test": "jscs ./",
+    "server": "python -m SimpleHTTPServer 8080",
+    "start": " /Applications/B2G.app/Contents/MacOS/htmlrunner --start-manifest=http://localhost:8080/manifest.webapp"
   },
   "devDependencies": {
     "jscs": "^1.8.1"
@@ -23,5 +25,9 @@
       "version": "2.0",
       "url": "http://mozilla.org/MPL/2.0/"
     }
-  ]
+  ],
+  "dependencies": {
+    "immutable": "^3.6.2",
+    "react": "^0.13.0-beta.1"
+  }
 }
