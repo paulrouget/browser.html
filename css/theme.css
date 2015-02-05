@@ -43,6 +43,7 @@ main * {
   display: flex;
 }
 
+.webviwer,
 tab-iframe {
   height: 100vh;
   flex-grow: 1;

@@ -14,10 +14,13 @@
   "scripts": {
     "test": "jscs ./",
     "server": "python -m SimpleHTTPServer 8080",
-    "start": " /Applications/B2G.app/Contents/MacOS/htmlrunner --start-manifest=http://localhost:8080/manifest.webapp"
+    "start": "/Applications/B2G.app/Contents/MacOS/b2g --start-manifest=http://localhost:8080/manifest.webapp",
+    "firebox": "node ./node_modules/firebox/firebox.js ./manifest.webapp",
+    "debug": "node ./node_modules/firebox/firebox.js ./manifest.webapp --debugger 6000"
   },
   "devDependencies": {
-    "jscs": "^1.8.1"
+    "jscs": "^1.8.1",
+    "firebox": "^0.3.0"
   },
   "licenses": [
     {
@@ -28,6 +31,7 @@
   ],
   "dependencies": {
     "immutable": "^3.6.2",
-    "react": "^0.13.0-beta.1"
+    "react": "^0.13.0-beta.1",
+    "omniscient": "git://github.com/Gozala/omniscient.git#unboxing"
   }
 }
