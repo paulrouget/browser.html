@@ -3,11 +3,17 @@ require.config({
   baseUrl: 'node_modules/',
   nodeIdCompat: true,
   paths: {
+    // http://facebook.github.io/react/
     'react': 'react/dist/react',
+    // http://facebook.github.io/immutable-js/
+    // Because of the bug https://github.com/facebook/immutable-js/pull/297
+    // we use forked version until it's uplifted.
     'immutable': 'immutable/dist/immutable',
     'immutable/cursor': 'immutable/contrib/cursor/index',
-    'pouchdb': 'lib/pouchdb/pouchdb-3.2.1.min',
-    'omniscient': 'omniscient/dist/omniscient'
+    // http://omniscientjs.github.io
+    'omniscient': 'omniscient/dist/omniscient',
+    // https://github.com/broofa/node-uuid
+    'uuid': 'node-uuid/uuid'
   },
   shim: {
     'immutable/cursor': {

@@ -13,6 +13,13 @@
   }
 }
 
+@font-face {
+  font-family: 'FontAwesome';
+  src: url('fontawesome-webfont.woff');
+  font-weight: normal;
+  font-style: normal;
+}
+
 * {
   -moz-appearance: none;
   background-color: transparent;
@@ -24,8 +31,7 @@
   border-width: 0;
   font-family: sans-serif;
   font-size: 12px;
-  line-height: 18px;
-  image-rendering: -moz-crisp-edges;
+  /* image-rendering: -moz-crisp-edges; */
   white-space: nowrap;
   vertical-align: middle;
 }
@@ -39,19 +45,6 @@
 }
 
 /* Let's use flexbox everywhere */
-main * {
-  display: flex;
-}
-
-.webviwer,
-tab-iframe {
-  height: 100vh;
-  flex-grow: 1;
-}
-
-iframe {
-  flex-grow: 1;
-}
 
 main {
   height: 100vh;
@@ -59,13 +52,32 @@ main {
   overflow-y: scroll;
   flex-flow: column;
   background-color: var(--bg);
-  color: #404245;
+  color: black;
+  /* scroll-behavior: smooth; */
+  display: flex;
 }
 
-main.dark-bg {
-  color: #BBB;
+main * {
+  display: flex;
 }
 
+tab-iframe {
+  flex-grow: 1;
+  flex-shrink: 0;
+}
+
+iframe {
+  display: flex;
+  flex-grow: 1;
+}
+
+.iframes {
+  flex-grow: 1;
+}
+
+.webviewer:not([hidden]).contentoverflows {
+  min-height: 100vh;
+}
 
 /***************************************
  *                                     *
@@ -74,27 +86,48 @@ main.dark-bg {
  ***************************************/
 
 .navbar {
+  background-color: inherit;
   -moz-window-dragging: drag;
-  padding: 8px 16px 8px 8px;
+  padding: 5px;
   justify-content: space-between;
 }
 
-.navbarendspacer {
+.freeendspacer {
   /* Mirror .windowctrls width to align the title */
-  width: 60px;
+  width: 67px;
 }
 
 /***************************************
  *                                     *
- *               URLBAR                *
+ *          locationbar                *
  *                                     *
  ***************************************/
 
-.urlbar {
+.locationbar {
   -moz-window-dragging: no-drag;
-  padding: 0 12px;
-  border-radius: 100px;
   align-items: center;
+  width: 460px;
+  flex-shrink: 0;
+  border-radius: 3px;
+  line-height: 30px;
+  background-color: #EEEEEE;
+}
+
+.navbar.loading .locationbar {
+  background-image: linear-gradient(110deg, #82D3FD, #82D3FD 80%, transparent 80%);
+  background-size: 600px 30px;
+  background-position: -460px 0;
+  background-repeat: no-repeat;
+  animation: urlloading 2s ease-out;
+  animation-fill-mode: forwards;
+}
+
+@keyframes urlloading { to { background-position: 0 0 } }
+
+.urlinput,
+.pagesummary {
+  overflow: hidden;
+  width: 100%;
 }
 
 .navbar:not(.urledit) .urlinput,
@@ -102,43 +135,88 @@ main.dark-bg {
   /* We don't use display:none. We want the input
    * to be focussable */
   max-width: 0;
-  overflow: hidden;
+  border-width: 0;
+  padding: 0;
 }
 
-p.pagesummary {
+.pagesummary {
   display: block;
-  overflow: hidden;
   text-overflow: ellipsis;
   flex-basis: content;
+  opacity: 0.8;
+  text-align: center;
+}
+
+.pagesummary,
+.urlinput {
+  border-width: 0 1px 0 1px;
+  border-style: solid;
+  border-color: transparent;
+  line-height: 30px;
+  padding: 0 8px;
+  border-color: rgba(0,0,0,0.07);
+}
+
+.urlinput {
+  border-radius: 0;
+}
+
+.backbutton,
+.reloadbutton,
+.stopbutton {
+  display: block;
+  min-width: 30px;
+  height: 30px;
+  font-family: FontAwesome;
+  text-align: center;
+  font-size: 17px;
+  vertical-align: middle;
+  opacity: 0.5;
+}
+
+.backbutton::after,
+.reloadbutton::after,
+.stopbutton::after {
+  pointer-events: none;
+  display: block;
+  line-height: 30px;
+  vertical-align: middle;
+}
+
+.backbutton::after {
+  transform: translateY(var(--hwd-pixel)); /* meh */
+}
+
+.backbutton::after {   content: "\f053" }
+.reloadbutton::after { content: "\f01e" }
+.stopbutton::after {   content: "\f00d" }
+
+.navbar.loading .reloadbutton,
+.navbar:not(.loading) .stopbutton {
+  display: none;
+}
+
+.navbar:not(.cangoback) .backbutton,
+.navbar:not(.canreload) .reloadbutton
+{
+  opacity: 0.1;
+  pointer-events: none;
 }
 
 .pagesummary > span {
   display: inline;
 }
 
-main:not(.dark-bg) .pageurlsummary {
-  font-weight: bold;
+.pagetitle {
+  opacity: 0.5;
+  padding: 5px;
 }
 
-main.dark-bg .pageurlsummary {
-  color: white;
+.navbar.ssl .pageurlsummary::before {
+  font-family: FontAwesome;
+  content: "\f023";
+  margin-right: 6px;
 }
-
-.navbar.urledit .urlbar,
-.navbar.loading .urlbar,
-.urlbar:hover {
-  background-color: #CFD8E1;
-}
-
-.navbar.loading .urlbar {
-  background-image: linear-gradient(110deg, transparent 20%,  #ADB4BB 20%, #ADB4BB 80%, transparent 80%);
-  background-size: 100px 100%;
-  background-position: 0 0;
-  background-repeat: repeat-x;
-  animation: urlloading 1s linear infinite;
-}
-
-@keyframes urlloading { to { background-position: 100px 0 } }
 
 /***************************************
  *                                     *
@@ -149,6 +227,7 @@ main.dark-bg .pageurlsummary {
 .windowctrls {
   align-items: center;
   flex-shrink: 0;
+  margin-left: 7px;
 }
 
 .windowctrl {
@@ -182,62 +261,83 @@ main:not(.windowFocused) .windowctrls:not(:hover) .windowctrl {
 
 /***************************************
  *                                     *
- *               TABS                  *
+ *            TABSTRIP                 *
  *                                     *
  ***************************************/
 
-.tabbar {
-  position: fixed;
-  bottom: 0;
+.tabstripcontainer {
+  -moz-window-dragging: drag;
+  display: flex;
+  position: absolute;
+  top: 40px;
+  left: 0;
   width: 100vw;
-  pointer-events: none;
+  height: 100px;
+  background-color: white;
   justify-content: center;
-  transition: transform 200ms ease;
+  z-index: 43;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 200ms ease;
 }
 
-.tabbar-inner {
+main.ctrlpressed .tabstripcontainer,
+main.cmdpressed .tabstripcontainer,
+main.showtabstrip .tabstripcontainer {
   pointer-events: auto;
-  background-color: #444E59;
-  border-radius: 4px 4px 0 0;
-  padding: 0 4px;
+  opacity: 1;
+}
+
+.tabstripkillzone {
+  display: block;
+  position: absolute;
+  top: 40px;
+  left: 0;
+  height: calc(100vh - 40px);
+  width: 100vw;
+  background-color: rgba(0,0,0,0);
+  transition: background-color 200ms ease;
+  pointer-events: none;
+  z-index: 42;
+}
+
+main.ctrlpressed .tabstripkillzone,
+main.cmdpressed .tabstripkillzone,
+main.showtabstrip .tabstripkillzone {
+  pointer-events: auto;
+  background-color: rgba(0,0,0,0.05);
+}
+
+main.ctrlpressed iframes,
+main.cmdpressed iframes,
+main.showtabstrip iframes {
+  pointer-events: none;
 }
 
 .tab {
-  width: 48px;
-  height: 36px;
-  border-radius: 2px;
-  border-style: solid;
-  border-width: 2px;
-  border-color: #979CA2;
-  background-color: #555D66;
-  margin: 8px;
+  margin: 15px 0 0;
+  height: 62.5px;
+  width: 100px;
+  border: 1px solid #EEE;
+  border-radius: 4px;
+  background-color: white;
+  transform: scale(0.8);
+  transition: transform 150ms ease;
+  background-size: 100% 100%;
+}
+
+.tab:first-of-type {
+  margin-left: 0;
+}
+
+.tab:last-of-type {
+  margin-right: 0;
 }
 
 .tab:hover {
-  border-color: white;
+  transform: scale(1);
 }
 
-.tab.selected {
-  border-color: #16A7FF;
-}
-
-.addtabbutton {
-  line-height: 36px;
-  text-align: center;
-  font-size: 18px;
-  padding: 8px 12px 8px 7px;
-  color: #979CA2;
-}
-
-.addtabbutton:hover {
-  color: #16A7FF;
-}
-
-.addtabbutton::before {
-  cursor: default;
-  content: "+";
-}
-
-main.scrolled .tabbar {
-  transform: translateY(54px);
+.tabstrip:not(:hover) .tab.selected {
+  transform: scale(1);
 }
