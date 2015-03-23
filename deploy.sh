@@ -10,5 +10,6 @@ git checkout --orphan gh-pages
 rm .gitignore
 git add .
 git commit -m "Deployed to Github Pages"
-git push --force --quiet "https://${GH_TOKEN}@${GH_REF}" gh-pages > /dev/null 2>&1
+# git push --force --quiet "https://${GH_TOKEN}@${GH_REF}" gh-pages > /dev/null 2>&1
+ git push "https://${GH_TOKEN}@${GH_REF}" gh-pages
 git status
