@@ -71,6 +71,7 @@ define((require, exports, module) => {
     canGoBack: Boolean(false),
     canGoForward: Boolean(false),
 
+    scrolled: Boolean(false),
     contentOverflows: Boolean(false),
     thumbnail: Maybe(String)
   });
@@ -101,7 +102,8 @@ define((require, exports, module) => {
     securityState: void(0),
     securityExtendedValidation: void(0),
     canGoBack: void(0),
-    canGoForward: void(0)
+    canGoForward: void(0),
+    scrolled: false
   });
 
   WebView.blur = blur;
@@ -139,6 +141,7 @@ define((require, exports, module) => {
   WebView.setTitle = set('title');
   WebView.setCanGoBack = set('canGoBack');
   WebView.setCanGoForward = set('canGoForward');
+  WebView.setScrolled = set('scrolled');
   WebView.startLoad = state => state.merge({
     readyState: 'loading',
     isLoading: true,
@@ -236,7 +239,7 @@ define((require, exports, module) => {
 
       onBlur: event => edit(WebView.blur),
       onFocus: event => edit(WebView.focus),
-      // onAsyncScroll: WebView.onUnhandled,
+      onAsyncScroll: event => edit(WebView.setScrolled(event.detail.top != 0)),
       onClose: event => onClose(state.id),
       onOpenWindow: event => onOpen(event.detail.url),
       onOpenTab: event => onOpenBg(event.detail.url),
@@ -313,7 +316,6 @@ define((require, exports, module) => {
   const WebViews = List(WebView)
 
   const WebViewBox = Record({
-    isActive: Boolean(true),
     items: WebViews
   });
 
@@ -321,12 +323,11 @@ define((require, exports, module) => {
   // no iframes will need to be removed / injected when order of tabs change.
   WebViewBox.render = Component(function WebViewsBox(state, handlers) {
     const {onOpen, onOpenBg, onClose, edit} = handlers;
-    const {items, isActive} = state;
+    const {items} = state;
 
     return DOM.div({
       style: {
         scrollSnapCoordinate: '0 0',
-        display: isActive ? 'block' : 'none'
       },
     }, items.sortBy(id).map(webView => WebView.render(webView.id, webView, {
       onOpen, onOpenBg, onClose,

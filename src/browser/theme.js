@@ -41,6 +41,7 @@ define((require, exports, module) => {
     'amazon.com': ['#e47911', '#fff', !IS_DARK],
     'taobao.com': ['#ff4400', '#fff', !IS_DARK],
     'qq.com': ['#5da4e6', '#fff', !IS_DARK],
+    'reddit.com': ['#5F99CF', '#F0F0F0', !IS_DARK],
     'sina.com.cn': ['#fff', '#ff8500', IS_DARK],
     'instagram.com': ['#fff', '#5380a5', IS_DARK],
     'imgur.com': ['#fff', '#2b2b2b', IS_DARK],

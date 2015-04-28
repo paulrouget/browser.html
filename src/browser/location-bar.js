@@ -12,7 +12,6 @@ define((require, exports, module) => {
   const {Suggestions} = require('./suggestion-box');
   const {Editable} = require('common/editable');
   const {WebView} = require('./web-view');
-  const {Previews} = require('./preview-box');
   const {getDomainName} = require('common/url-helper');
   const {KeyBindings} = require('common/keyboard');
   const {mix} = require('common/style');
@@ -111,15 +110,14 @@ define((require, exports, module) => {
 
 
   LocationBar.render = Component(function LocationBarView(state, handlers) {
-    const {input, tabStrip, webView, suggestions, theme} = state;
-    const {onNavigate, editTabStrip, onGoBack, editSelectedWebView,
+    const {input, webView, suggestions, theme} = state;
+    const {onNavigate, onGoBack, editSelectedWebView,
            editInput, editSuggestions} = handlers;
 
     const isInputFocused = input.isFocused;
 
     return DOM.div({
-      style: mix(styleLocationBar, theme.locationBar),
-      onMouseEnter: event => editTabStrip(Previews.activate)
+      style: mix(styleLocationBar, theme.locationBar)
     }, [
       DOM.div({
         style: mix(styleButton,

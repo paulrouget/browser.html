@@ -25,7 +25,7 @@ define((require, exports, module) => {
   };
 
   const WindowBar = Component(function WindowBar(state, handlers) {
-    const {key, input, tabStrip, webView, suggestions,
+    const {key, input, webView, suggestions,
            title, rfa, theme, isDocumentFocused} = state;
     return DOM.div({
       key,
@@ -46,7 +46,7 @@ define((require, exports, module) => {
       }),
       LocationBar.render(LocationBar({
         key: 'navigation',
-        input, tabStrip, webView,
+        input, webView,
         suggestions, title, theme
       }), handlers),
       ProgressBar({key: 'progressbar', rfa, webView, theme},

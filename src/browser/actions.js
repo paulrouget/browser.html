@@ -80,7 +80,6 @@ define((require, exports, module) => {
     // issues when app iframe isn't focused. Can be fixed
     // once #239 is resolved.
     input: Editable(),
-    tabStrip: {isActive: false},
     dashboard: initDashboard({items: dashboardItems}),
     rfa: {id: -1},
     suggestions: Suggestions(),
@@ -120,8 +119,6 @@ define((require, exports, module) => {
 
   exports.makeSearchURL = makeSearchURL;
   exports.readInputURL = readInputURL;
-  exports.activate = state => state.set('isActive', true);
-  exports.deactivate = state => state.set('isActive', false);
   exports.resetSession = resetSession;
   exports.readSession = readSession;
   exports.writeSession = writeSession;
