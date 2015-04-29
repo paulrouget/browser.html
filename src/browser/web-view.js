@@ -262,9 +262,15 @@ define((require, exports, module) => {
       onTitleChange: event => edit(WebView.setTitle(event.detail)),
       onPrompt: event => console.log(event),
       onAuthentificate: event => console.log(event),
-      onScrollAreaChange: event =>
-        edit(WebView.setContentOverflows(event.detail.height >
-                                         event.target.parentNode.clientHeight)),
+      onScrollAreaChange: event => {
+        if (!state.contentOverflows) {
+          // This will trigger a resize. If the content react to the resize by changing its
+          // layout, this might change the scrollarea again, triggering a resize… infinite
+          // loop.
+          // So we only allow contentOverflows to transition from false (default value) to true.
+          edit(WebView.setContentOverflows(event.detail.height > event.target.parentNode.clientHeight));
+        }
+      },
       onLoadProgressChange: event => edit(WebView.changeProgress(event))
     });
   });

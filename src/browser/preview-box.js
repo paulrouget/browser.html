@@ -11,7 +11,8 @@ define((require, exports, module) => {
   const {sendEventToChrome} = require('./actions');
   const {mix} = require('common/style');
   const {getBestFavicon} = require('common/getbestfavicon');
-  const {select, activate, remove, isPinned} = require('./deck/actions');
+  const {select, activate, remove, isPinned, insertAfter} = require('./deck/actions');
+  const {WebView} = require('./web-view');
 
   // FIXME: redundant (see browser.js)
 
@@ -23,11 +24,18 @@ define((require, exports, module) => {
   const closeWebView = webView =>
     close(x => x.get('id') == webView.id);
 
+  const add = items =>
+    insertAfter(items,
+                 WebView.open({isSelected: true,
+                               isFocused: true,
+                               isActive: true}),
+                 item => item === items.last());
+
   // View
 
   const Previews = {};
 
-  Previews.render = Component(({webViews}, {edit}) => {
+  Previews.render = Component(({webViews, isDocumentScrolled}, {edit}) => {
 
 
     const previews = webViews.toJSON().map((webView, index) => {
@@ -121,11 +129,14 @@ define((require, exports, module) => {
       key: 'addbutton',
       style: {
         fontFamily: 'FontAwesome',
+        paddingRight: 20, // For resizer
+        cursor: 'default',
         width: 30,
         alignSelf: 'center',
         textAlign: 'center',
         flexShrink: '0'
-      }
+      },
+      onClick: e => edit(add)
     }, '\uf067');
 
     const spacer = DOM.div({
@@ -146,7 +157,9 @@ define((require, exports, module) => {
         width: '100vw',
         backgroundColor: '#F0F2F5',
         display: 'flex',
-        alignItems: 'flex-stretch'
+        alignItems: 'flex-stretch',
+        transition: 'transform 100ms ease',
+        transform: !isDocumentScrolled ? 'none' : 'translateY(30px)'
       },
     }, [
       previews,

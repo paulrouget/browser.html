@@ -15,7 +15,7 @@ define((require, exports, module) => {
   const {Updates} = require('./update-banner');
   // TODO: Should be `const {version} = require('package.json`);` instead but require.js
   // does not supports that.
-  const version = '0.0.6';
+  const version = '0.0.7';
 
   const makeSearchURL = input =>
     `https://duckduckgo.com/?q=${encodeURIComponent(input)}`;
@@ -35,6 +35,7 @@ define((require, exports, module) => {
   // Creates a blank session. Returns immutable map.
   const resetSession = () => fromJS({
     isDocumentFocused: document.hasFocus(),
+    isDocumentScrolled: false,
     // TODO: `isFocused` should be `true` but that causes
     // issues when app iframe isn't focused. Can be fixed
     // once #239 is resolved.

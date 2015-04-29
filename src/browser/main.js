@@ -24,7 +24,8 @@ define((require, exports, module) => {
     onDocumentKeyUp: Event('keyup', getOwnerWindow),
     onDocumentUnload: Event('unload', getOwnerWindow),
     onAppUpdateAvailable: Event('app-update-available', getOwnerWindow),
-    onRuntimeUpdateAvailable: Event('runtime-update-available', getOwnerWindow)
+    onRuntimeUpdateAvailable: Event('runtime-update-available', getOwnerWindow),
+    onScroll: Event('scroll', getOwnerWindow),
   });
 
   exports.Main = Main;
