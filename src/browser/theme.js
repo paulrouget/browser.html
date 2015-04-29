@@ -24,7 +24,6 @@ define((require, exports, module) => {
     locationText: {color: 'rgba(0,0,0, 0.65)'},
     titleText: {color: 'rgba(0,0,0,0.5)'},
     pageInfoText: {color: 'rgba(0,0,0,0.5)'},
-    tabstrip: {backgroundColor: '#fff'},
     navigationPanel: {backgroundColor: '#fff'},
     progressbar: {color: '#82D3FD'},
     awesomebarSuggestions: {backgroundColor: '#fff', color: 'rgba(0,0,0, 0.65)'}
@@ -80,7 +79,6 @@ define((require, exports, module) => {
       locationText: {color: foregroundColor},
       titleText: {color: foregroundColor},
       pageInfoText: {color: foregroundColor},
-      tabstrip: {backgroundColor},
       navigationPanel: {backgroundColor},
       progressbar: {color: foregroundColor},
       awesomebarSuggestions: {backgroundColor, color: foregroundColor}

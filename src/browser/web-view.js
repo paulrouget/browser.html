@@ -212,6 +212,7 @@ define((require, exports, module) => {
     negative index and absolute position.
     */
     if (!state.isActive && !state.thumbnail) {
+      /* FIXME: creates a black background
       style = mix(style, {
         zIndex: -1,
         display: 'block !important',
@@ -219,6 +220,7 @@ define((require, exports, module) => {
         width: '100vw',
         height: '100vh'
       });
+      */
     }
 
     return IFrame({
@@ -251,8 +253,10 @@ define((require, exports, module) => {
       onIconChange: event => edit(WebView.changeIcon(event.detail)),
       onLocationChange: event => {
         edit(WebView.changeLocation(event.detail));
+        /* FIXME:
         requestThumbnail(event.target)
           .then(WebView.onThumbnailChanged(edit));
+        */
       },
       onSecurityChange: event => edit(WebView.changeSecurity(event.detail)),
       onTitleChange: event => edit(WebView.setTitle(event.detail)),
@@ -327,7 +331,7 @@ define((require, exports, module) => {
 
     return DOM.div({
       style: {
-        scrollSnapCoordinate: '0 0',
+        scrollSnapCoordinate: '0 0'
       },
     }, items.sortBy(id).map(webView => WebView.render(webView.id, webView, {
       onOpen, onOpenBg, onClose,

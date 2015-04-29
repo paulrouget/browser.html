@@ -17,12 +17,12 @@ define((require, exports, module) => {
   const {WindowBar} = require('./window-bar');
   const {LocationBar} = require('./location-bar');
   const {Suggestions} = require('./suggestion-box');
-  const {Previews} = require('./simple-preview-box');
+  const {Previews} = require('./preview-box');
   const {WebViewBox, WebView} = require('./web-view');
   const {readInputURL, deactivate, writeSession, resetSession, resetSelected} = require('./actions');
   const {indexOfSelected, indexOfActive, isActive, active, selected,
          selectNext, selectPrevious, select, activate,
-         remove, insertBefore,
+         remove, insertAfter,
          isntPinned, isPinned} = require('./deck/actions');
   const {readTheme} = require('./theme');
   const {Main} = require('./main');
@@ -61,15 +61,15 @@ define((require, exports, module) => {
   }
 
   const openTab = uri => items =>
-    insertBefore(items,
+    insertAfter(items,
                  WebView.open({uri,
                                isSelected: true,
                                isFocused: true,
                                isActive: true}),
-                 isntPinned);
+                 isActive);
 
   const openTabBg = uri => items =>
-    insertBefore(items, WebView.open({uri}), isntPinned);
+    insertAfter(items, WebView.open({uri}), isActive);
 
   const clearActiveInput = viewers =>
     viewers.setIn([indexOfActive(viewers), 'userInput'], '');
@@ -86,8 +86,10 @@ define((require, exports, module) => {
   // If closing viewer, replace it with a fresh one & select it.
   // This avoids code branching down the pipe that otherwise will
   // need to deal with 0 viewer & no active viewer case.
+  // FIXME: I don't understand this comment ^ We still need to make
+  // sure we don't delete the latest viewer.
   const close = p => items =>
-    !isPinned(items.find(p)) ? remove(items, p) : items;
+    (!isPinned(items.find(p)) && items.size > 1) ? remove(items, p) : items;
 
   const closeTab = id =>
     close(x => x.get('id') == id);
@@ -217,7 +219,7 @@ define((require, exports, module) => {
         key: 'preview-box',
         webViews
       }, {
-        edit: editWebViews
+        edit: editWebViews,
       }),
       Suggestions.render({
         key: 'awesomebar',
