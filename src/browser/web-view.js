@@ -188,7 +188,7 @@ define((require, exports, module) => {
 
   const styleIframe = {
     display: 'block',
-    height: 'calc(100vh - 50px)',
+    height: 'calc(100vh - 50px - 30px)', // FIXME: previewbox covers content
     MozUserSelect: 'none',
     width: '100vw'
   };
@@ -268,6 +268,7 @@ define((require, exports, module) => {
           // layout, this might change the scrollarea again, triggering a resize… infinite
           // loop.
           // So we only allow contentOverflows to transition from false (default value) to true.
+          // FIXME: this needs to be reset to `false` on navigate
           edit(WebView.setContentOverflows(event.detail.height > event.target.parentNode.clientHeight));
         }
       },

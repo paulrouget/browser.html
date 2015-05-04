@@ -35,7 +35,7 @@ define((require, exports, module) => {
 
   const Previews = {};
 
-  Previews.render = Component(({webViews, isDocumentScrolled}, {edit}) => {
+  Previews.render = Component(({webViews}, {edit}) => {
 
 
     const previews = webViews.toJSON().map((webView, index) => {
@@ -69,6 +69,8 @@ define((require, exports, module) => {
           justifyContent: 'space-between',
           padding: '0 7px'
         },
+        // FIXME: black box when selecting the iframe that way.
+        // No black box when using the keyboard shortcut
         onClick: e => edit(selectWebView(webView)),
       }, [
         DOM.div({
@@ -157,9 +159,7 @@ define((require, exports, module) => {
         width: '100vw',
         backgroundColor: '#F0F2F5',
         display: 'flex',
-        alignItems: 'flex-stretch',
-        transition: 'transform 100ms ease',
-        transform: !isDocumentScrolled ? 'none' : 'translateY(30px)'
+        alignItems: 'flex-stretch'
       },
     }, [
       previews,

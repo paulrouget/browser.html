@@ -173,7 +173,6 @@ define((require, exports, module) => {
     const input = state.get('input');
     const rfa = state.get('rfa');
     const suggestions = state.get('suggestions');
-    const isDocumentScrolled = state.get('isDocumentScrolled');
     const isDocumentFocused = state.get('isDocumentFocused');
     const updates = state.get('updates');
 
@@ -199,8 +198,7 @@ define((require, exports, module) => {
                                  onBrowserBinding(edit)),
       onDocumentKeyUp: onDeckBindingRelease(editWebViews),
       onAppUpdateAvailable: event => editUpdates(Updates.setAppUpdateAvailable),
-      onRuntimeUpdateAvailable: event => editUpdates(Updates.setRuntimeUpdateAvailable),
-      onScroll: event => edit(state => state.set('isDocumentScrolled', event.target.scrollTop != 0)),
+      onRuntimeUpdateAvailable: event => editUpdates(Updates.setRuntimeUpdateAvailable)
     }, [
       WindowBar({
         key: 'navigation',
@@ -219,8 +217,7 @@ define((require, exports, module) => {
       }),
       Previews.render({
         key: 'preview-box',
-        webViews,
-        isDocumentScrolled
+        webViews
       }, {
         edit: editWebViews,
       }),
