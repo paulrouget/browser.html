@@ -66,7 +66,7 @@ define((require, exports, module) => {
         width: '240px',
         backgroundColor: '#fff',
         display: 'inline-block',
-        boxShadow: '0 1px 3px rgba(0, 0, 0, 0.4)'
+        // boxShadow: '0 1px 3px rgba(0, 0, 0, 0.4)'
       },
       onClick: address.pass(Shell.Action.Focus, context),
       onMouseUp: address.pass(Close, context)
@@ -133,23 +133,40 @@ define((require, exports, module) => {
   };
   exports.viewPreview = viewPreview;
 
-  const view = (webView, webViews, theme, address) => html.div({
-    style: {
-      position: 'absolute',
-      width: '100vw',
-      height: '100vh',
-      top: 0,
-      textAlign: 'center',
-      paddingTop: 'calc(100vh / 2 - 150px)',
-      backgroundColor: '#273340',
-      overflowX: 'auto'
+  const view = (webView, webViews, theme, address) => {
+
+    let deckVisible = webView.view.input.isFocused;
+
+    let transform, transition;
+    if (deckVisible) {
+      transform = 'scale(1)';
+      transition = 'transform 200ms ease';
+    } else {
+      transform = (window.innerWidth / 240) * webViews.magnifyScale
+      transform = `scale(${transform})`;
+      transition = webViews.magnifyScale == 1 ? 'transform 200ms ease' : 'none';
     }
-  }, webViews
-      .entries
-      .filter(({view}) => view.id !== 'about:dashboard')
-      .map(({view}, index) =>
-        render(view.id, viewPreview, view.id, index,
-                        webViews.selected, view.page, address)));
+
+    return html.div({
+      style: {
+        transform,
+        transition,
+        position: 'absolute',
+        width: '100vw',
+        height: '100vh',
+        top: 0,
+        textAlign: 'center',
+        paddingTop: 'calc(100vh / 2 - 150px)',
+        backgroundColor: '#273340',
+        overflowX: 'auto'
+      }
+    }, webViews
+        .entries
+        .filter(({view}) => view.id !== 'about:dashboard')
+        .map(({view}, index) =>
+          render(view.id, viewPreview, view.id, index,
+                          webViews.selected, view.page, address)))
+  };
   exports.view = view;
 
 });

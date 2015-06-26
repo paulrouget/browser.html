@@ -15,6 +15,7 @@ define((require, exports, module) => {
   const Thumbnail = require('service/thumbnail');
   const Pallet = require('service/pallet');
   const URI = require('common/url-helper');
+  const {GestureScale} = require('service/gesture');
 
   // Model
   const EntryModel = Record({
@@ -26,7 +27,8 @@ define((require, exports, module) => {
     selected: 0,
     previewed: 0,
     nextID: 0,
-    entries: List(EntryModel)
+    entries: List(EntryModel),
+    magnifyScale: 1,
   }, 'WebViews');
   exports.Model = Model;
 
@@ -64,7 +66,7 @@ define((require, exports, module) => {
 
   const Action = Union({PreviewByIndex, PreviewByID, PreviewByOffset,
                         SelectByIndex, SelectByID, SelectByOffset,
-                        Open, OpenInBackground, Close,
+                        Open, OpenInBackground, Close, GestureScale,
                         WebView: WebView.Action});
   exports.Action = Action;
 
@@ -177,6 +179,13 @@ define((require, exports, module) => {
     }))
   });
 
+  const magnify = (state, scale) => {
+    if (scale < 0.5) {
+      return updateWebView(state, Input.Action.Focus({id: '@selected'})).set('magnifyScale', scale);
+    }
+    return state.set('magnifyScale', scale);
+  }
+
   const updateWebView = (state, action) => {
     const index = indexByID(state, action.id);
     const entry = state.entries.get(index);
@@ -223,6 +232,8 @@ define((require, exports, module) => {
       select(state, indexByID(state, action.id)) :
     action instanceof SelectByIndex ?
       select(state, action.index) :
+    action instanceof GestureScale ?
+      magnify(state, action.scale) :
     WebView.Action.isTypeOf(action) ?
       updateWebView(state, action) :
     state;
@@ -233,10 +244,24 @@ define((require, exports, module) => {
   const view = (state, address) => {
     const selected = state.entries.get(state.selected);
 
+
+    let transform, transition, opacity;
+    if (selected.view.input.isFocused) {
+      opacity = 0;
+      transform = 'scale(0)';
+      transition = 'transform 200ms ease, opacity 200ms ease';
+    } else {
+      opacity = (state.magnifyScale - 0.5) / 0.5;
+      transform = `scale(${state.magnifyScale})`;
+      transition = state.magnifyScale == 1 ? 'transform 200ms ease, opacity 200ms ease' : 'none';
+    }
+
     return html.div({
       key: 'web-views',
       style: {
-        transform: `scale(${selected.view.input.isFocused ? 0 : 1})`
+        opacity,
+        transition,
+        transform
       },
     }, state.entries.map(({view}) =>
       render(view.id,

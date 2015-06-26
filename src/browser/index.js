@@ -17,6 +17,7 @@ define((require, exports, module) => {
   const Suggestion = require('service/suggestion');
   const Keyboard = require('common/keyboard');
   const Settings = require('service/settings');
+  const GestureScale = require('service/gesture');
 
   // Set up a address (message bus if you like) that will be used
   // as an address for all application components / services. This
@@ -56,6 +57,7 @@ define((require, exports, module) => {
   const keyboard = Keyboard.service(address);
   const settings = Settings.service(address);
   // const session = Session.service(address);
+  const gestureScale = GestureScale.service(address);
 
   // Restore application state.
   address.receive(Session.Action.RestoreSession());
