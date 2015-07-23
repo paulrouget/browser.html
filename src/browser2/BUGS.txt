@@ -2,6 +2,7 @@
 - make suggestions better
 
 - tooltips!
+- close doesn't work anymore
 
 - getting some serious slow down
 
