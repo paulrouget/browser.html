@@ -323,19 +323,18 @@ define((require, exports, module) => {
 
   const webviewStyle = StyleSheet.create({
     base: {
-      position: 'absolute',
       display: 'block',
-      height: 'calc(100vh - 28px)',
       MozUserSelect: 'none',
-      width: '100vw',
-      backgroundColor: '#fff'
+      width: '100%',
+      height: '100%',
+      backgroundColor: '#fff',
     },
     active: {},
     inactive: {
       display: 'none'
     },
     passive: {
-      visibility: 'collapse'
+      display: 'none'
     }
   });
 
@@ -395,8 +394,7 @@ define((require, exports, module) => {
 
   const webviewsStyle = StyleSheet.create({
     base: {
-      width: '100vw',
-      height: 'calc(100vh - 28px)',
+      flexGrow: '1',
     },
     fadeIn: {
       transition: 'opacity 100ms linear',
