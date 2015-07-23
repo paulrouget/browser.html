@@ -150,7 +150,9 @@ define((require, exports, module) => {
       lineHeight: '40px',
       verticalAlign: 'middle',
       borderTop: '1px solid rgba(0,0,0,0.05)',
-      cursor: 'pointer'
+      cursor: 'pointer',
+      overflow: 'hidden',
+      textOverflow: 'ellipsis',
     },
     selected: {
       backgroundClip: 'content-box',
@@ -202,7 +204,7 @@ define((require, exports, module) => {
       }, Icon[type] || ''),
       html.span({
         key: 'suggestion'
-      }, state.title)
+      }, type == 'history' ? state.uri : state.title)
     ]);
   };
   exports.viewSuggestion = viewSuggestion;
