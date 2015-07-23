@@ -1,0 +1,33 @@
+- restore session
+- make suggestions better
+
+- tooltips!
+
+- getting some serious slow down
+
+- ctrl-w focus the wrong page
+- medium bar should not be black
+- tabs should slide in when created
+- mousedown on prettyurl then drag doesn't allow the user to select
+- Cmd-Z doesn't work in the input
+- go to yahoo.com, ui is purple. search for "test", purple disappears
+- multimedia
+- private mode
+- pip
+- highlight tabcount when new tab
+- swip left to reveal the sidebar
+- back button is greyed out while page is loading (reddit.com -> click link -> greyed out -> loaded -> not greyed out)
+- center align title and input
+- help and share buttons
+- animate tab creation
+- ctrl-tab: url is focused and selected
+- wrong favicon for youtube (not HD), instagram, gmail, black icon for github
+- one stylesheet per files
+- Cmd-L: input doesn't scroll back properly
+- sometimes, throbber spins for ever (with https://www.quantamagazine.org/20150721-famous-fluid-equations-are-incomplete/ for example)
+- ImageDocument are not zoomed
+- use color:shell.text at the windowBar level
+- lost native colors for window controls (but is that bad?)
+- display tabs as tree
+
+VISOR: (2|3    F1 F2 F3 …     +)
