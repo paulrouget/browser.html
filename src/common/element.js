@@ -19,6 +19,7 @@ define((require, exports, module) => {
 
   class ElementView extends React.Component {
     constructor() {
+      super();
       React.Component.apply(this, arguments);
 
       const {type, fields, mount, mounted, write} = this.props;
