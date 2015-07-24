@@ -34,6 +34,7 @@ define((require, exports, module) => {
   exports.PageQuery = PageQuery;
 
   const service = address => {
+    /* FIXME: doesn't work with r.js
     const worker = require('common/worker!service/history-worker');
 
     worker.onmessage = ({data: {type, action}}) => {
@@ -85,6 +86,8 @@ define((require, exports, module) => {
         handleAction(action)
       }
     }
+    */
+    return () => {};
   };
   exports.service = service;
 
