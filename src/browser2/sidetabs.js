@@ -15,8 +15,8 @@ define((require, exports, module) => {
   const Focusable = require('common/focusable');
 
   const Model = Record({
-    showSidetabs: true,
-    large: false,
+    showSidetabs: false,
+    large: true,
   });
   exports.Model = Model;
 
@@ -196,16 +196,16 @@ define((require, exports, module) => {
       }, [
         html.div({
           style: styleButton.default,
-          onClick: address.pass(ToggleSidetabs),
-        }, '\uf363'),
-        html.div({
-          style: styleButton.default,
           onClick: address.pass(ToggleSidetabsSize),
-        }, '\uf264'),
+        }, sidetabs.large ? '\uf397' : '\uf396'),
         html.div({
           style: styleButton.default,
           onClick: address.pass(ToggleDevtoolsHUD),
         }, '\uf2AD'),
+        html.div({
+          style: styleButton.default,
+          onClick: address.pass(ToggleSidetabs),
+        }, '\uf404'),
       ]),
     ]);
 
