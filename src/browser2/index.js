@@ -51,6 +51,11 @@ define((require, exports, module) => {
   const pallet = Pallet.service(address);
   const suggestion = Suggestion.service(address);
 
+  // See src/prerendering.js
+  document.body.innerHTML = '';
+  application.render();
+  window.localStorage.setItem('prerender', document.body.innerHTML);
+
   address.receive(Session.ResetSession());
 
   application.render();
