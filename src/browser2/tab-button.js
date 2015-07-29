@@ -8,7 +8,6 @@ define((require, exports, module) => {
 
   const {html, render} = require('reflex')
   const {StyleSheet, Style} = require('common/style');
-  const Sidetabs = require('browser2/sidetabs');
 
   // Style
 
@@ -34,7 +33,7 @@ define((require, exports, module) => {
 
   // view
 
-  const view = (selected, tabCount, showSidetabs, theme, address) => {
+  const view = (selected, tabCount, theme, address) => {
 
     tabCount = tabCount || 1;
     selected = tabCount - selected; // tabs are ordered young -> old
@@ -42,8 +41,7 @@ define((require, exports, module) => {
     return html.div({
       key: 'TabButtonContainer',
       style: Style(style.container, {color: theme.shellText}),
-      onClick: address.pass(Sidetabs.ToggleSidetabs),
-    }, !showSidetabs && [
+    }, [
       html.span({style: style.selected}, selected),
       html.span({style: style.tabCount}, '|' + tabCount),
     ]);

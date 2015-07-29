@@ -91,6 +91,7 @@ define((require, exports, module) => {
     container: {
       fontSize: '12px',
       lineHeight: '14px',
+      height: '14px',
       flexGrow: 1,
       fontWeight: 'lighter',
       overflow: 'hidden',

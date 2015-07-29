@@ -24,7 +24,17 @@ define((require, exports, module) => {
   const Progress = require('browser/web-progress');
   const Theme = require('browser/theme');
 
-  const Sidetabs = require('browser2/sidetabs');
+  const Tabs = {
+    none: {
+      isVertical: true,
+      height: 0,
+      view: () => null,
+    },
+    bottom: require('browser2/tabs/bottom'),
+    side: require('browser2/tabs/side'),
+    sideSmall: require('browser2/tabs/smallside'),
+  }
+
   const WindowBar = require('browser2/window-bar');
   const LocationBar = require('browser2/location-bar');
   const UI = require('browser2/ui');
@@ -38,9 +48,8 @@ define((require, exports, module) => {
     webViews: WebView.Model,
     input: Input.Model,
     devtoolsHUD: DevtoolsHUD.Model,
-    sidetabs: Sidetabs.Model,
     suggestions: Suggestions.Model,
-    mode: 'show-web-view'
+    tabMode: 'bottom',
   });
   exports.Model = Model;
 
@@ -59,12 +68,9 @@ define((require, exports, module) => {
     'accel shift [': _ => WebView.SelectPrevious(),
     'control tab': _ => WebView.SelectPrevious(), // tabs are stored old last
     'control shift tab': _ => WebView.SelectNext(),
-    'control n': _ => WebView.SelectPrevious(),
-    'control p': _ => WebView.SelectNext(),
     'accel r': _ => Navigation.Reload(),
     'escape': _ => Navigation.Stop(),
     'F12': _ => DevtoolsHUD.ToggleDevtoolsHUD(),
-    'control b': _ => Sidetabs.ToggleSidetabs(),
     [`${modifier} left`]: _ => Navigation.GoBack(),
     [`${modifier} right`]: _ => Navigation.GoForward()
   }, 'Browser.KeyDown.Action');
@@ -99,7 +105,6 @@ define((require, exports, module) => {
     (state, action) => state.set('webViews', WebView.update(state.webViews, action)), // FIXME: webview.update has a lot of overlap (but no-op) with UI.update
     (state, action) => state.set('input', Input.update(state.input, action)),
     (state, action) => state.set('devtoolsHUD', DevtoolsHUD.update(state.devtoolsHUD, action)),
-    (state, action) => state.set('sidetabs', Sidetabs.update(state.sidetabs, action)),
     (state, action) => state.set('suggestions', Suggestions.update(state.suggestions, action))
   ]);
 
@@ -136,7 +141,6 @@ define((require, exports, module) => {
       flexGrow: '1',
     },
     webViewContainerBigger: {
-      height: '100vh',
       flexShrink: '0',
     },
   });
@@ -151,16 +155,15 @@ define((require, exports, module) => {
 
     const theme = page ? cache(Theme.read, page.pallet) : defaultTheme;
 
-    const showSidetabs = state.sidetabs.showSidetabs;
-
     const contentCanScroll = page && page.overflow;
 
     const suggestionBox = render('Suggestions', Suggestions.view, 'edit-web-view', suggestions, input, theme, address);
 
+    const tabs = Tabs[state.tabMode];
 
     return Main({
       key: 'root',
-      style: Style(styleBoxes.fullVH, styleBoxes.hbox),
+      style: Style(styleBoxes.fullVH, tabs.isVertical ? styleBoxes.hbox : styleBoxes.vbox),
       windowTitle: !loader ? '' :
                    !page ? loader.uri :
                    page.title || loader.uri,
@@ -175,16 +178,16 @@ define((require, exports, module) => {
         style: Style(styleBoxes.scrollable, styleBoxes.vbox, styleBoxes.flex1),
         className: 'moz-noscrollbars',
       }, [
-        render('WindowBar', WindowBar.view, shell, loader, progress, navigation, security, page, input, suggestions, webViews.selected, tabCount, showSidetabs, theme, address),
+        render('WindowBar', WindowBar.view, shell, loader, progress, navigation, security, page, input, suggestions, webViews.selected, tabCount, theme, address),
         render('ProgressBars', Progress.view, 'show-web-view', webViews.loader, webViews.progress, webViews.selected, theme),
         suggestionBox,
         html.div({
           key: 'resizableVbox',
-          style: Style(styleBoxes.webViewContainer, contentCanScroll && styleBoxes.webViewContainerBigger),
+          style: Style(styleBoxes.webViewContainer, contentCanScroll && styleBoxes.webViewContainerBigger, {height: `calc(100vh - ${tabs.height}px)`}),
         }, render('WebViews', WebView.view, 'show-web-view', 'zoom', webViews.loader, webViews.shell, webViews.page, address, webViews.selected)),
         render('DevtoolsHUD', DevtoolsHUD.view, state.devtoolsHUD, address),
       ]),
-      render('Sidetabs', Sidetabs.view, state.sidetabs, webViews.page, webViews.loader, webViews.progress, webViews.selected, address),
+      render('Tabs', tabs.view, webViews.page, webViews.loader, webViews.progress, webViews.selected, address),
     ])
   };
   exports.view = view;

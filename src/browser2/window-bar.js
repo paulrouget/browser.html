@@ -38,7 +38,6 @@ define((require, exports, module) => {
       suggestions,
       selected,
       tabCount,
-      showSidetabs,
       theme,
       address) => html.div({
     key: 'WindowBar',
@@ -46,7 +45,7 @@ define((require, exports, module) => {
   },[
     render('WindowControls', WindowControls.view, shell, theme, address),
     render('LocationBar', LocationBar.view, loader, progress, security, navigation, page, input, suggestions, shell, theme, address),
-    render('TabButton', TabButton.view, selected, tabCount, showSidetabs, theme, address),
+    render('TabButton', TabButton.view, selected, tabCount, theme, address),
   ]);
   exports.view = view;
 });
