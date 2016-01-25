@@ -180,6 +180,7 @@ export const update/*:type.update*/ = (model, action) =>
 
 const styleSheet = StyleSheet.create({
   container: {
+    display: 'none',
     height: '12px',
     position: 'absolute',
     width: '50px',
