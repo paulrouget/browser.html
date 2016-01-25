@@ -22,6 +22,10 @@ const minute = 60 * second;
 
 const defaultUpdateURI = 'https://api.github.com/repos/mozilla/browser.html/contents/HEAD?ref=refs/heads/gh-pages'
 
+var fetch = () => {
+  return new Promise((a,b) => {});
+}
+
 const VERSION_SETTING_NAME = 'browserhtml.HEAD_HASH';
 
 const ApplyUpdates/*:type.ApplyUpdates*/ =
