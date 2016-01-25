@@ -13,7 +13,7 @@ import {Renderer} from "driver";
 
 
 const logger = (update) => (model, action) => {
-  console.log('>>> Action:', action);
+  // console.log('>>> Action:', action);
 
   if (console.group != null) {
     console.group();
@@ -25,8 +25,8 @@ const logger = (update) => (model, action) => {
     console.groupEnd();
   }
 
-  console.log('<<< Model:', out[0])
-  console.log('<<< Effects:', out[1]);
+  // console.log('<<< Model:', out[0])
+  // console.log('<<< Effects:', out[1]);
   return out;
 }
 
